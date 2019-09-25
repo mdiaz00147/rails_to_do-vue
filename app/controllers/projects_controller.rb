@@ -17,13 +17,9 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
-
     respond_to do |format|
       if @project.save
-        format.html {
-                      redirect_to project_path(@project),
-                      notice: 'Project was successfully created.'
-                    }
+        format.html {redirect_to project_path(@project),notice: 'Project was successfully created.'}
       else
         format.html { render action: 'new' }
       end
@@ -33,10 +29,7 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update(project_params)
-        format.html {
-                      redirect_to project_path(@project),
-                      notice: 'Project was successfully updated.'
-                    }
+        format.html {redirect_to project_path(@project), notice: 'Project was successfully updated.' }
       else
         format.html { render action: 'edit' }
       end
@@ -44,22 +37,18 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project.destroy
+    @project.soft_delete
     respond_to do |format|
-      format.html {
-                    redirect_to projects_path,
-                    notice: 'Project was successfully destroyed.'
-                  }
+      format.html { redirect_to projects_path, notice: 'Project was successfully destroyed.' }
     end
   end
 
   def clear
-    @project.items.complete.destroy_all
+    items = @project.items.complete
+    notice  =  items.count === 0 ? "There are no completed items for this project." : "Completed items were successfully cleared."
+    items.each{|x| x.soft_delete }
     respond_to do |format|
-      format.html {
-                    redirect_to project_path(@project),
-                    notice: 'Completed items were successfully cleared.'
-                  }
+      format.html {redirect_to project_path(@project), notice: notice, notice_type: 'error' }
     end
   end
 

@@ -1,16 +1,25 @@
-%h2 New Item
-= form_for([@project, @item]) do |f|
-  - if @item.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(@item.errors.count, 'error')
-        prohibited this project from being saved:
-      %ul
-        - @item.errors.full_messages.each do |msg|
-          %li= msg
-  .field
-    = f.label :action
-    %br/
-    = f.text_field :action, size: '80'
-  .actions
-    = f.submit
+.card.col-12.p-3#form
+  %h2 New Item
+  = form_for([@project, @item] ) do |f|
+    .form-group
+      = f.label :action
+      %br/
+      = f.text_field :action, size: '80', class: "form-control", placeholder: 'E.g: do homework'
+    .actions
+      = f.submit 'Submit', :class => 'btn btn-block btn-success'
+
+:javascript
+  Vue.use(Toasted)
+  const errors = #{@item.errors.full_messages.to_json}
+  var app = new Vue({
+    el: '#form',
+    mounted(){
+      errors.map((item) => {
+        Vue.toasted.show(item, {
+          type: 'error',
+          duration: 5000
+        });
+      })
+      
+    }
+  })

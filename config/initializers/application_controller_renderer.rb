@@ -4,3 +4,5 @@
 #   http_host: 'example.org',
 #   https: false
 # )
+
+Haml::Template.options[:escape_html] = false

@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: items
+#
+#  id         :integer          not null, primary key
+#  action     :string
+#  project_id :integer
+#  done       :boolean          default(FALSE)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'rails_helper'
 
 RSpec.describe Item, :type => :model do

@@ -1,10 +1,36 @@
-%ul
+.card.col-12.p-3#items
+  %h2
+    = link_to @project.title.capitalize, edit_project_path(@project)
+    Items
   - if @project.items.empty?
-    %li No items.
-  - @project.items.each do |item|
-    %li{ class: "#{item.done? ? 'done' : 'not-done'}" }
-      = link_to item.action, edit_project_item_path(@project, item)
-      - unless item.done?
-        = button_to 'Done', { controller: :items, action: :update, id: item.id, project_id: @project.id, item: { done: true } }, { method: :patch }
-= link_to 'New Item', new_project_path(project)
-= link_to 'Clear Completed Items', clear_project_path(project), method: :delete, id: 'clearer'
+    %h4.m-5.d-flex.justify-content-center No items.
+  -else
+    %table.table.table-stripped.table-bordered
+      %thead
+        %th No.
+        %th Action
+        %th.text-center Status
+      - @project.items.each_with_index do |item,index|
+        %tr
+          %td= (index + 1)
+          %td
+            %span{ :class => "#{item.done ? 'done' : 'not-done'}" }
+              = link_to item.action.capitalize, edit_project_item_path(@project, item)
+          %td.text-center
+            = button_to 'Done', { controller: :items, action: :update, id: item.id, project_id: @project.id, item: { done: true }, class: "btn btn-default btn-xs btn-warning " }, { method: :patch }
+  .col-12.mt-5
+    = link_to 'New Item', new_project_item_path(project), class:'btn btn-success col-5 '
+    = link_to 'Clear Completed Items', clear_project_path(project), class:'btn btn-dark col-5', method: :delete, id: 'clearer'
+
+:javascript
+  Vue.use(Toasted)
+
+  var app = new Vue({
+    el: '#items',
+    mounted(){
+      Vue.toasted.show('#{flash[:notice]}', {
+        type: '#{flash[:notice_type]}',
+        duration: 5000
+      });
+    }
+  })

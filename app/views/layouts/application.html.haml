@@ -1,10 +1,23 @@
 !!!
 %html
   %head
-    %meta{:content => 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}/
+    %meta{:content => 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}
     %title BrokenTodoHomework
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    %link{:crossorigin => "anonymous", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css", :integrity => "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm", :rel => "stylesheet"}
+
+    %script{:src => "https://unpkg.com/vue/dist/vue.js"}
+    %script{:src => "https://unpkg.com/vue-toasted"}
+
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    
+    
   %body#main
-    = yield
+    %h1.d-flex.justify-content-center
+      %span.badge.badge-secondary 
+        = link_to  '#TODOAPP', projects_path, class: "text-white"
+      
+
+    .container.container-fluid.mt-5
+      = yield

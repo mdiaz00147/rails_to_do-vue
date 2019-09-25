@@ -7,15 +7,11 @@ class ItemsController < ApplicationController
 
   def create
     @item = @project.items.build(item_params)
-
     respond_to do |format|
       if @item.save
-        format.html {
-                      redirect_to project_path(@project),
-                      notice: 'Item was successfully created.'
-                    }
+        format.html {redirect_to project_path(@project), notice: 'Item was successfully created.'}
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new'}
       end
     end
   end
@@ -26,13 +22,9 @@ class ItemsController < ApplicationController
 
   def update
     @item = @project.items.find(params[:id])
-
     respond_to do |format|
       if @item.update(item_params)
-        format.html {
-                      redirect_to project_path(@project),
-                      notice: 'Item was successfully updated.'
-                    }
+        format.html {redirect_to project_path(@project), notice: 'Item was successfully updated.'}
       else
         format.html { render action: 'edit' }
       end

@@ -1,15 +1,23 @@
 = form_for(@project) do |f|
-  - if @project.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(@project.errors.count, 'error')
-        prohibited this project from being saved:
-      %ul
-        - @project.errors.full_messages.each do |msg|
-          %li= msg
-  .field
+  .form-group#form
     = f.label :title
     %br
-    = f.text_field :title, size: '80'
+    = f.text_field :title, size: '80', class: "form-control", placeholder: 'E.g: Rails app with vue.js'
   .actions
-    = f.submit
+    = f.submit 'Submit', :class => 'btn btn-block btn-success'
+
+
+:javascript
+  Vue.use(Toasted)
+  const errors = #{@project.errors.full_messages.to_json}
+  var app = new Vue({
+    el: '#form',
+    mounted(){
+      errors.map((item) => {
+        Vue.toasted.show(item, {
+          type: 'error',
+          duration: 5000
+        });
+      })
+    }
+  })

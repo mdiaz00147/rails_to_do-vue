@@ -1,10 +1,34 @@
-%h2 Projects
-%ul
-  - if @projects.empty?
-    %li No projects.
-  - @projects.each do |project|
-    %li
-      = link_to project.title,  project_path(project)
-      %span
-        = link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' }
-= link_to 'New Project', new_project_path
+
+#projects
+  .card.col-12.p-3#projects
+    %h2 Projects
+    - if @projects.empty?
+      %h4.m-5.d-flex.justify-content-center No projects.
+    - else
+      %table.table.table-stripped.table-bordered
+        %thead
+          %th No.
+          %th Project
+          %th.text-center Action
+        - @projects.each_with_index do |project,index|
+          %tr
+            %td= (index + 1)
+            %td
+              = link_to project.title.capitalize,  project_path(project)
+            %td.text-center
+              = link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' }, class:"btn btn-danger btn-xs"
+    .col-12
+      = link_to 'New Project', new_project_path, class: 'btn btn-success  btn-block'
+
+:javascript
+  Vue.use(Toasted)
+
+  var app = new Vue({
+    el: '#projects',
+    mounted(){
+      Vue.toasted.show('#{flash[:notice]}', {
+        type: '#{flash[:notice_type]}',
+        duration: 5000
+      });
+    }
+  })
