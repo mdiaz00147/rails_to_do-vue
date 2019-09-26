@@ -1,3 +1,12 @@
+installation:
+
+  - bundle install
+  - rails db:create db:migrate db:seed
+
+run the folowwing command to display projects and items:
+
+  - rails projects:display
+
 (Semi Broken) Todo App!
 
 Hello!
